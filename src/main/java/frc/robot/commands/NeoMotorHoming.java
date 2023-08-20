@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.NeoMotor;
 
@@ -33,6 +34,7 @@ public class NeoMotorHoming extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         subsystem.resetController();
+        subsystem.setAngle(Constants.NeoSubsystemConstants.HARD_STOP_STATE_RAD);
         subsystem.setHoming(false);
     }
     
