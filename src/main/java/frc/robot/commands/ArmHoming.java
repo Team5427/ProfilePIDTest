@@ -4,18 +4,18 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.NeoMotor;
+import frc.robot.subsystems.Arm;
 
-public class NeoMotorHoming extends CommandBase {
+public class ArmHoming extends CommandBase {
 
     private Timer timer;
 
-    private NeoMotor subsystem;
+    private Arm subsystem;
 
-    public NeoMotorHoming () {
-        subsystem = RobotContainer.getNeoMotor();
+    public ArmHoming() {
+        subsystem = RobotContainer.getArm();
         addRequirements(subsystem);
-        
+
         timer = new Timer();
     }
 
@@ -34,8 +34,8 @@ public class NeoMotorHoming extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         subsystem.resetController();
-        subsystem.setAngle(Constants.NeoSubsystemConstants.HARD_STOP_STATE_RAD);
+        subsystem.setAngle(Constants.ArmSubsystemConstants.HARD_STOP_STATE_RAD);
         subsystem.setHoming(false);
     }
-    
+
 }
