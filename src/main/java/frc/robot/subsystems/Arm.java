@@ -13,8 +13,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmSubsystemConstants;
+import frc.robot.commands.ArmHoming;
+import frc.robot.commands.SetGoal;
 
 public class Arm extends SubsystemBase {
 
@@ -48,8 +51,8 @@ public class Arm extends SubsystemBase {
         encoder.setVelocityConversionFactor(ArmSubsystemConstants.VELOCITY_CONV_FACTOR);
         motor.setSmartCurrentLimit(ArmSubsystemConstants.CURRENT_LIMIT);
 
-        motor.burnFlash();
         Timer.delay(0.2);
+        motor.burnFlash();
 
         controller = new ProfiledPIDController(kP, kI, kD,
                 new Constraints(ArmSubsystemConstants.MAX_SPEED_RAD_PER_SEC,
@@ -123,6 +126,14 @@ public class Arm extends SubsystemBase {
                     + feedforward.calculate(getWrappedAngle(), controller.getSetpoint().velocity));
         }
 
+    }
+
+    public Command setGoalCommand(double goal) {
+        return new SetGoal(goal, this);
+    }
+
+    public Command armHomingCommand() {
+        return new ArmHoming(this);
     }
 
 }

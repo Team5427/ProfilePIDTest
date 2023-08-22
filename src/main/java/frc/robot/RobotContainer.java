@@ -4,9 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmSubsystemConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArmHoming;
-import frc.robot.commands.SetGoal;
 import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -27,7 +26,7 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
-  private static Arm arm;
+  private Arm arm;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -53,9 +52,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.b().onTrue(new SetGoal(Constants.ArmSubsystemConstants.STRAIGHT_FORWARD_STATE_RAD));
-    m_driverController.y().onTrue(new SetGoal(Constants.ArmSubsystemConstants.STRAIGHT_UP_STATE_RAD));
-    m_driverController.x().onTrue(new ArmHoming());
+    m_driverController.b().onTrue(arm.setGoalCommand(ArmSubsystemConstants.STRAIGHT_FORWARD_STATE_RAD));
+    m_driverController.y().onTrue(arm.setGoalCommand(ArmSubsystemConstants.STRAIGHT_UP_STATE_RAD));
+    m_driverController.x().onTrue(arm.armHomingCommand());
   }
 
   /**
@@ -65,9 +64,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return null;
-  }
-
-  public static Arm getArm() {
-    return arm;
   }
 }
