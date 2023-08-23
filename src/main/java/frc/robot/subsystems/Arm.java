@@ -13,8 +13,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmSubsystemConstants;
 import frc.robot.commands.ArmHoming;
 import frc.robot.commands.SetGoal;
@@ -34,8 +36,8 @@ public class Arm extends SubsystemBase {
     private static final double kI = 0.0;
     private static final double kD = 0.0;
     private static final double kS = 0.01;
-    private static final double kG = 0.04;
-    private static final double kV = 1.36;
+    private static final double kG = 0.02;
+    private static final double kV = 1.95;
 
     public Arm() {
 
@@ -43,7 +45,7 @@ public class Arm extends SubsystemBase {
         motor.restoreFactoryDefaults();
         Timer.delay(0.2);
 
-        motor.setIdleMode(IdleMode.kBrake);
+        motor.setIdleMode(IdleMode.kCoast);
         motor.setInverted(ArmSubsystemConstants.INVERTED);
 
         encoder = motor.getEncoder();
@@ -119,12 +121,17 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
 
-        if (homing) {
-            motor.set(0.05);
-        } else {
-            motor.setVoltage(controller.calculate(getWrappedAngle())
-                    + feedforward.calculate(getWrappedAngle(), controller.getSetpoint().velocity));
-        }
+        // if (homing) {
+        //     motor.set(0.05);
+        // } else {
+        //     motor.setVoltage(controller.calculate(getWrappedAngle())
+        //             + feedforward.calculate(getWrappedAngle(), controller.getSetpoint().velocity));
+        // }
+
+        setPercent(-RobotContainer.getJoy().getHID().getLeftX() * .8);
+
+        SmartDashboard.putNumber("Position", encoder.getPosition());
+        SmartDashboard.putNumber("Velocity", encoder.getVelocity());
 
     }
 

@@ -24,9 +24,9 @@ public final class Constants {
   }
 
   public static class ArmSubsystemConstants {
-    public static final int ID = 3;
+    public static final int ID = 4;
 
-    public static final double GEARING = 70.0;
+    public static final double GEARING = 100.0;
     public static final int CURRENT_LIMIT = 40;
     public static final boolean INVERTED = false;
 
