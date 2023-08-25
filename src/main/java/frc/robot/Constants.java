@@ -38,6 +38,6 @@ public final class Constants {
     public static final double STRAIGHT_FORWARD_STATE_RAD = 0.0;
     public static final double STRAIGHT_UP_STATE_RAD = Math.PI / 2.0;
 
-    public static final double HARD_STOP_STATE_RAD = 1.0;
+    public static final double HARD_STOP_STATE_RAD = Math.PI;
   }
 }

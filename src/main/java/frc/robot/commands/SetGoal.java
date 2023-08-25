@@ -17,6 +17,7 @@ public class SetGoal extends CommandBase {
 
     @Override
     public void initialize() {
+        arm.resetController();
         arm.setSetpoint(setpoint);
     }
 

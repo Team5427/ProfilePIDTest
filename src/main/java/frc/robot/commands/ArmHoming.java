@@ -26,15 +26,26 @@ public class ArmHoming extends CommandBase {
     }
 
     @Override
+    public void execute() {
+        if (Math.abs(subsystem.getVelocity()) > .5) {
+            timer.reset();
+            timer.start();
+        }
+    }
+
+    @Override
     public boolean isFinished() {
-        return subsystem.getHoming() && Math.abs(subsystem.getVelocity()) < .25 && timer.get() > .5;
+        return subsystem.getHoming() && Math.abs(subsystem.getVelocity()) < .5 && timer.get() > .3;
     }
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("homed");
         subsystem.resetController();
         subsystem.setAngle(Constants.ArmSubsystemConstants.HARD_STOP_STATE_RAD);
         subsystem.setHoming(false);
+        subsystem.stop();
+        Timer.delay(1);
     }
 
 }

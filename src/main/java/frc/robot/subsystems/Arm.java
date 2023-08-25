@@ -29,10 +29,10 @@ public class Arm extends SubsystemBase {
     private ProfiledPIDController controller;
     private ArmFeedforward feedforward;
 
-    private double setpoint_rad = 0.0;
+    private double setpoint_rad = ArmSubsystemConstants.STRAIGHT_UP_STATE_RAD;
     private boolean homing = false;
 
-    private static final double kP = 0.0;
+    private static final double kP = 0.65;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
     private static final double kS = 0.01;
@@ -66,10 +66,14 @@ public class Arm extends SubsystemBase {
     }
 
     public void setPercent(double speed) {
+        // SmartDashboard.putNumber("Percent", speed);
+        // System.out.printf("\nPercent %.2f", speed);
         motor.set(speed);
     }
 
     public void setVoltage(double voltage) {
+        // SmartDashboard.putNumber("Voltage", voltage);
+        // System.out.printf("\nVoltage %.2f", voltage);
         motor.setVoltage(voltage);
     }
 
@@ -115,23 +119,29 @@ public class Arm extends SubsystemBase {
     }
 
     public void stop() {
-        motor.set(0.0);
+        motor.setVoltage(0.0);
     }
 
     @Override
     public void periodic() {
 
-        // if (homing) {
-        //     motor.set(0.05);
-        // } else {
-        //     motor.setVoltage(controller.calculate(getWrappedAngle())
-        //             + feedforward.calculate(getWrappedAngle(), controller.getSetpoint().velocity));
-        // }
+        if (homing) {
+            setVoltage(12.0 * 0.15);
+        } else {
+            setVoltage(controller.calculate(getWrappedAngle())
+                    + feedforward.calculate(getWrappedAngle(), controller.getSetpoint().velocity));
 
-        setPercent(-RobotContainer.getJoy().getHID().getLeftX() * .8);
+            SmartDashboard.putNumber("controller setpoint", controller.getSetpoint().velocity);
+        }
 
-        SmartDashboard.putNumber("Position", encoder.getPosition());
-        SmartDashboard.putNumber("Velocity", encoder.getVelocity());
+        // setVoltage(RobotContainer.getJoy().getLeftX());
+
+        // setPercent(RobotContainer.getJoy().getHID().getLeftX() * .8);
+
+        SmartDashboard.putNumber("Position", getWrappedAngle());
+        SmartDashboard.putNumber("Velocity", getVelocity());
+
+        SmartDashboard.putNumber("Error", controller.getPositionError());
 
     }
 
