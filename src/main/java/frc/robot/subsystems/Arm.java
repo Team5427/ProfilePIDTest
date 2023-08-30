@@ -32,12 +32,13 @@ public class Arm extends SubsystemBase {
     private double setpoint_rad = ArmSubsystemConstants.STRAIGHT_UP_STATE_RAD;
     private boolean homing = false;
 
-    private static final double kP = 0.63;
+    private static final double kP = 0.61;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
-    private static final double kS = 0.01;
+    private static final double kS = 0.09;
     private static final double kG = 0.02;
     private static final double kV = 1.95;
+
 
     public Arm() {
 
